@@ -1,0 +1,2 @@
+from
+app = Flask(__name__)

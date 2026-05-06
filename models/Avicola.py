@@ -1,0 +1,2 @@
+class Avicola:
+  pass
