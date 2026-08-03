@@ -1,25 +1,34 @@
-import sqlite3
+import psycopg2
+from helpers.logger import logger
 
-DATABASE_NAME = "avicola.db"
+DATABASE_NAME = "avicola"
+DATABASE_USER = "postgres"
+DATABASE_PASS = "123456"
+DATABASE_PORT = "5435"
+DATABASE_HOST = "localhost"
 
 conn = None
 try:
-    #1- abrir a conexão
-    conn = sqlite3.connect(DATABASE_NAME)
-
-    #2- recuperar o cursor
+    # 1 - Abrir a conexão
+    conn = psycopg2.connect(database=DATABASE_NAME,
+                            user=DATABASE_USER,
+                            password=DATABASE_PASS,
+                            host=DATABASE_HOST, port=DATABASE_PORT)
+    logger.info("Conectou ao banco de dados")
+    # 2 - Recuperar o cursor
     cursor = conn.cursor()
 
-    #3- preparar a consulta: query statement
+    # 3 - Preparar a consultar: query | statement
     with open('schema.sql', mode='r') as file:
-        cursor.executescript(file.read())
+        cursor.execute(file.read())
+    logger.info("Criou as tabelas")
 
-    #4.1- iterar nos resultados:
-    #4.2- confirmar alterações:
+    # 4.1 - Iterar nos resultados: resultset.
+    # 4.2 - Confirmar operação.
     conn.commit()
-except sqlite3.Error as e:
-    print(e)
+except psycopg2.Error as e:
+    logger.error(e)
 finally:
-    #5- fechar a conexão
+    # 5 - Fechar a conexão
     if conn:
         conn.close()
