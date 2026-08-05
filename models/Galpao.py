@@ -1,25 +1,21 @@
-import sqlite3
-from flask import request
-from helpers.application import app
-from helpers.database import get_conn
 from marshmallow import Schema, fields, validate
 
 class Galpao:
-    def __init__(self, id, nome, capacidade, avicola_id):
+    def __init__(self, id, nome, capacidade, tipo):
         self.id = id
         self.nome = nome
         self.capacidade = capacidade
-        self.avicola_id = avicola_id
+        self.tipo = tipo
 
     def toDict(self):
         return {
             "id": self.id,
             "nome": self.nome,
             "capacidade": self.capacidade,
-            "avicola_id": self.avicola_id
+            "tipo": self.tipo
         }
 
 class GalpaoSchema(Schema):
     nome = fields.Str(required=True)
     capacidade = fields.Int(required=True, validate=validate.Range(min=1))
-    avicola_id = fields.Int(required=True)
+    tipo = fields.Str(required=True)

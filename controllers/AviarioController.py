@@ -1,5 +1,9 @@
 from flask import Blueprint, request, jsonify
-from services.aviario_service import AviarioService
+import psycopg2
+from marshmallow import ValidationError
+
+from models.Aviario import AviarioSchema
+from Service.AviarioService import AviarioService
 from helpers.logger import logger
 
 aviario_bp = Blueprint('aviario', __name__, url_prefix='/aviarios')
@@ -7,37 +11,66 @@ service = AviarioService()
 
 @aviario_bp.get("/")
 def getAviarios():
-    aviarios = service.listar()
-    return jsonify([a.toDict() for a in aviarios]), 200
+    logger.info("Controller: Listando todos os aviários")
+    try:
+        aviarios = service.getAllAviarios()
+        return jsonify([a.toDict() for a in aviarios]), 200
+    except psycopg2.Error as e:
+        logger.error(e)
+        return {"erro": "Erro interno ao listar aviários"}, 500
 
 @aviario_bp.get("/<int:id>")
-def getAviario(id):
-    aviario = service.buscar(id)
-    if aviario is None:
-        return {"mensagem": "Aviário não encontrado"}, 404
-    return aviario.toDict(), 200
+def getByIdAviario(id: int):
+    logger.info(f"Controller: Buscando aviário pelo id: {id}")
+    try:
+        aviario = service.getByIdAviario(id)
+        if aviario is None:
+            return {"mensagem": "Aviário não encontrado"}, 404
+        return aviario.toDict(), 200
+    except psycopg2.Error as e:
+        logger.error(e)
+        return {"erro": "Erro interno ao buscar aviário"}, 500
 
 @aviario_bp.post("/")
 def postAviario():
-    dados = request.get_json()
     try:
-        id = service.criar(dados)
+        dados = request.get_json()
+        schema = AviarioSchema()
+        dados_validados = schema.load(dados)
+
+        id = service.criarAviario(dados_validados)
         return {"mensagem": "Aviário criado com sucesso!", "id": id}, 201
-    except Exception as e:
+    except ValidationError as err:
+        return jsonify(err.messages), 400
+    except psycopg2.Error as e:
         logger.error(e)
-        return {"mensagem": "Erro ao criar aviário"}, 500
+        return {"erro": "Erro interno ao criar aviário"}, 500
 
 @aviario_bp.put("/<int:id>")
-def putAviario(id):
-    dados = request.get_json()
-    linhas = service.atualizar(id, dados)
-    if linhas == 0:
-        return {"mensagem": "Aviário não encontrado"}, 404
-    return {"mensagem": "Aviário atualizado com sucesso"}, 200
+def putAviario(id: int):
+    try:
+        dados = request.get_json()
+        schema = AviarioSchema()
+        dados_validados = schema.load(dados)
+
+        linhas = service.atualizarAviario(id, dados_validados)
+        if linhas == 0:
+            return {"mensagem": "Aviário não encontrado"}, 404
+        return {"mensagem": "Aviário atualizado com sucesso"}, 200
+    except ValidationError as err:
+        return jsonify(err.messages), 400
+    except psycopg2.Error as e:
+        logger.error(e)
+        return {"erro": "Erro interno ao atualizar aviário"}, 500
 
 @aviario_bp.delete("/<int:id>")
-def deleteAviario(id):
-    linhas = service.remover(id)
-    if linhas == 0:
-        return {"mensagem": "Aviário não encontrado"}, 404
-    return {"mensagem": "Aviário removido com sucesso"}, 202
+def deleteAviario(id: int):
+    logger.info(f"Controller: Deletando aviário id: {id}")
+    try:
+        linhas = service.removerAviario(id)
+        if linhas == 0:
+            return {"mensagem": "Aviário não encontrado"}, 404
+        return {"mensagem": "Aviário removido com sucesso!"}, 202
+    except psycopg2.Error as e:
+        logger.error(e)
+        return {"erro": "Erro interno ao remover aviário"}, 500

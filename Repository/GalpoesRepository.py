@@ -1,52 +1,47 @@
 from helpers.database import get_conn
 from helpers.logger import logger
-from models.Galpao import Galpao
 
-class GalpaoRepository:
+class GalpaoRepository():
     def getAll(self):
         conn = get_conn()
         cursor = conn.cursor()
-        logger.info("Buscando todos os galpões")
-        cursor.execute("SELECT * FROM tb_galpoes")
-        rows = cursor.fetchall()
-        conn.close()
-        return [Galpao(*row) for row in rows]
+        logger.info("Repositório: Buscando todos os galpões.")
+        cursor.execute("SELECT * FROM tb_galpao")
+        return cursor.fetchall()
 
     def getById(self, id: int):
         conn = get_conn()
         cursor = conn.cursor()
-        logger.info(f"Buscando galpão pelo id {id}")
-        cursor.execute("SELECT * FROM tb_galpoes WHERE id=?", (id,))
-        row = cursor.fetchone()
-        conn.close()
-        return Galpao(*row) if row else None
+        logger.info(f"Repositório: Buscando galpão pelo id {id}.")
+        cursor.execute("SELECT * FROM tb_galpao WHERE id=%s", (id,))
+        return cursor.fetchone()
 
-    def insert(self, dados):
+    def insert(self, nome, capacidade, tipo):
         conn = get_conn()
         cursor = conn.cursor()
-        stmt = "INSERT INTO tb_galpoes (nome, capacidade, avicola_id) VALUES (?, ?, ?)"
-        cursor.execute(stmt, (dados["nome"], dados["capacidade"], dados["avicola_id"]))
+        logger.info("Repositório: Inserindo novo galpão.")
+        cursor.execute(
+            "INSERT INTO tb_galpao (nome, capacidade, tipo) VALUES (%s, %s, %s) RETURNING id",
+            (nome, capacidade, tipo)
+        )
         conn.commit()
-        id = cursor.lastrowid
-        conn.close()
-        return id
+        return cursor.fetchone()[0]
 
-    def update(self, id, dados):
+    def update(self, id, nome, capacidade, tipo):
         conn = get_conn()
         cursor = conn.cursor()
-        stmt = "UPDATE tb_galpoes SET nome=?, capacidade=?, avicola_id=? WHERE id=?"
-        cursor.execute(stmt, (dados["nome"], dados["capacidade"], dados["avicola_id"], id))
+        logger.info(f"Repositório: Atualizando galpão {id}.")
+        cursor.execute(
+            "UPDATE tb_galpao SET nome=%s, capacidade=%s, tipo=%s WHERE id=%s",
+            (nome, capacidade, tipo, id)
+        )
         conn.commit()
-        linhas = cursor.rowcount
-        conn.close()
-        return linhas
+        return cursor.rowcount
 
-    def delete(self, id):
+    def delete(self, id: int):
         conn = get_conn()
         cursor = conn.cursor()
-        stmt = "DELETE FROM tb_galpoes WHERE id=?"
-        cursor.execute(stmt, (id,))
+        logger.info(f"Repositório: Deletando galpão {id}.")
+        cursor.execute("DELETE FROM tb_galpao WHERE id=%s", (id,))
         conn.commit()
-        linhas = cursor.rowcount
-        conn.close()
-        return linhas
+        return cursor.rowcount

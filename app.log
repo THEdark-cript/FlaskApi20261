@@ -1,0 +1,74 @@
+2026-08-05 14:26:36,282 - INFO - Repositório: Inserindo novo avicultor.
+2026-08-05 14:26:47,784 - INFO - Repositório: Inserindo novo avicultor.
+2026-08-05 14:26:47,793 - ERROR - duplicate key value violates unique constraint "tb_avicultor_cpf_key"
+DETAIL:  Key (cpf)=(12345678901) already exists.
+
+2026-08-05 14:27:04,747 - INFO - Repositório: Inserindo novo avicultor.
+2026-08-05 14:27:07,829 - INFO - Controller: Listando todos os avicultores
+2026-08-05 14:27:07,844 - INFO - Repositório: Buscando todos os avicultores.
+2026-08-05 14:27:14,359 - INFO - Repositório: Atualizando avicultor 2.
+2026-08-05 14:27:22,885 - INFO - Controller: Listando todos os avicultores
+2026-08-05 14:27:22,918 - INFO - Repositório: Buscando todos os avicultores.
+2026-08-05 14:27:32,028 - INFO - Controller: Buscando avicultor pelo id: 3
+2026-08-05 14:27:32,040 - INFO - Repositório: Buscando avicultor pelo id 3.
+2026-08-05 14:27:32,044 - INFO - Service: Lendo informações do resultado da consulta ao banco.
+2026-08-05 14:28:00,712 - INFO - Repositório: Atualizando avicultor 3.
+2026-08-05 14:28:04,768 - INFO - Controller: Buscando avicultor pelo id: 3
+2026-08-05 14:28:04,779 - INFO - Repositório: Buscando avicultor pelo id 3.
+2026-08-05 14:28:04,782 - INFO - Service: Lendo informações do resultado da consulta ao banco.
+2026-08-05 14:28:07,624 - INFO - Controller: Deletando avicultor id: 3
+2026-08-05 14:28:07,624 - INFO - Service: Tentando deletar avicultor 3.
+2026-08-05 14:28:07,638 - INFO - Repositório: Buscando avicultor pelo id 3.
+2026-08-05 14:28:07,642 - INFO - Service: Lendo informações do resultado da consulta ao banco.
+2026-08-05 14:28:07,642 - INFO - Repositório: Deletando avicultor 3.
+2026-08-05 14:28:15,319 - INFO - Controller: Listando todos os avicultores
+2026-08-05 14:28:15,330 - INFO - Repositório: Buscando todos os avicultores.
+2026-08-05 14:28:24,159 - INFO - Controller: Listando todas as avícolas
+2026-08-05 14:28:24,178 - INFO - Repositório: Buscando todas as avícolas.
+2026-08-05 14:28:49,777 - INFO - Repositório: Inserindo nova avícola.
+2026-08-05 14:29:13,500 - INFO - Repositório: Inserindo nova avícola.
+2026-08-05 14:29:16,864 - INFO - Controller: Listando todas as avícolas
+2026-08-05 14:29:16,879 - INFO - Repositório: Buscando todas as avícolas.
+2026-08-05 14:29:33,727 - INFO - Repositório: Atualizando avícola 2.
+2026-08-05 14:29:37,462 - INFO - Controller: Buscando avícola pelo id: 2
+2026-08-05 14:29:37,479 - INFO - Repositório: Buscando avícola pelo id 2.
+2026-08-05 14:29:37,484 - INFO - Service: Lendo informações do resultado da consulta ao banco.
+2026-08-05 14:29:40,518 - INFO - Controller: Deletando avícola id: 2
+2026-08-05 14:29:40,528 - INFO - Repositório: Deletando avícola 2.
+2026-08-05 14:29:46,504 - INFO - Controller: Listando todas as avícolas
+2026-08-05 14:29:46,515 - INFO - Repositório: Buscando todas as avícolas.
+2026-08-05 14:29:53,659 - INFO - Controller: Listando todos os aviários
+2026-08-05 14:29:53,672 - INFO - Repositório: Buscando todos os aviários.
+2026-08-05 14:30:11,425 - INFO - Repositório: Inserindo novo aviário.
+2026-08-05 14:30:18,999 - INFO - Repositório: Inserindo novo aviário.
+2026-08-05 14:30:27,751 - INFO - Repositório: Atualizando aviário 2.
+2026-08-05 14:30:30,016 - INFO - Controller: Buscando aviário pelo id: 2
+2026-08-05 14:30:30,025 - INFO - Repositório: Buscando aviário pelo id 2.
+2026-08-05 14:30:30,027 - INFO - Service: Lendo informações do resultado da consulta ao banco.
+2026-08-05 14:30:45,872 - INFO - Repositório: Atualizando aviário 2.
+2026-08-05 14:30:48,336 - INFO - Controller: Buscando aviário pelo id: 2
+2026-08-05 14:30:48,346 - INFO - Repositório: Buscando aviário pelo id 2.
+2026-08-05 14:30:48,349 - INFO - Service: Lendo informações do resultado da consulta ao banco.
+2026-08-05 14:30:52,902 - INFO - Controller: Listando todos os aviários
+2026-08-05 14:30:52,913 - INFO - Repositório: Buscando todos os aviários.
+2026-08-05 14:31:01,694 - INFO - Controller: Deletando aviário id: 2
+2026-08-05 14:31:01,704 - INFO - Repositório: Deletando aviário 2.
+2026-08-05 14:31:10,491 - INFO - Controller: Listando todos os galpões
+2026-08-05 14:31:10,501 - INFO - Repositório: Buscando todos os galpões.
+2026-08-05 14:31:35,553 - INFO - Repositório: Inserindo novo galpão.
+2026-08-05 14:31:46,690 - INFO - Repositório: Inserindo novo galpão.
+2026-08-05 14:31:48,965 - INFO - Controller: Listando todos os galpões
+2026-08-05 14:31:48,976 - INFO - Repositório: Buscando todos os galpões.
+2026-08-05 14:31:55,443 - INFO - Repositório: Atualizando galpão 2.
+2026-08-05 14:32:12,729 - INFO - Repositório: Atualizando galpão 2.
+2026-08-05 14:32:15,054 - INFO - Controller: Buscando galpão pelo id: 2
+2026-08-05 14:32:15,065 - INFO - Repositório: Buscando galpão pelo id 2.
+2026-08-05 14:32:15,068 - INFO - Service: Lendo informações do resultado da consulta ao banco.
+2026-08-05 14:32:19,529 - INFO - Controller: Deletando galpão id: 2
+2026-08-05 14:32:19,539 - INFO - Repositório: Deletando galpão 2.
+2026-08-05 14:32:23,685 - INFO - Controller: Listando todos os galpões
+2026-08-05 14:32:23,695 - INFO - Repositório: Buscando todos os galpões.
+2026-08-05 14:35:53,234 - INFO - Controller: Listando todos os galpões
+2026-08-05 14:35:53,302 - INFO - Repositório: Buscando todos os galpões.
+2026-08-05 14:35:58,141 - INFO - Controller: Listando todos os galpões
+2026-08-05 14:35:58,159 - INFO - Repositório: Buscando todos os galpões.

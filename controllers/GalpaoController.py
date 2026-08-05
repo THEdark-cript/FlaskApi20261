@@ -1,5 +1,9 @@
 from flask import Blueprint, request, jsonify
-from services.galpao_service import GalpaoService
+import psycopg2
+from marshmallow import ValidationError
+
+from Service.GalpoesService import GalpaoService
+from models.Galpao import GalpaoSchema
 from helpers.logger import logger
 
 galpao_bp = Blueprint('galpao', __name__, url_prefix='/galpoes')
@@ -7,37 +11,66 @@ service = GalpaoService()
 
 @galpao_bp.get("/")
 def getGalpoes():
-    galpoes = service.listar()
-    return jsonify([g.toDict() for g in galpoes]), 200
+    logger.info("Controller: Listando todos os galpões")
+    try:
+        galpoes = service.getAllGalpoes()
+        return jsonify([g.toDict() for g in galpoes]), 200
+    except psycopg2.Error as e:
+        logger.error(e)
+        return {"erro": "Erro interno ao listar galpões"}, 500
 
 @galpao_bp.get("/<int:id>")
-def getGalpao(id):
-    galpao = service.buscar(id)
-    if galpao is None:
-        return {"mensagem": "Galpão não encontrado"}, 404
-    return galpao.toDict(), 200
+def getByIdGalpao(id: int):
+    logger.info(f"Controller: Buscando galpão pelo id: {id}")
+    try:
+        galpao = service.getByIdGalpao(id)
+        if galpao is None:
+            return {"mensagem": "Galpão não encontrado"}, 404
+        return galpao.toDict(), 200
+    except psycopg2.Error as e:
+        logger.error(e)
+        return {"erro": "Erro interno ao buscar galpão"}, 500
 
 @galpao_bp.post("/")
 def postGalpao():
-    dados = request.get_json()
     try:
-        id = service.criar(dados)
+        dados = request.get_json()
+        schema = GalpaoSchema()
+        dados_validados = schema.load(dados)
+
+        id = service.criarGalpao(dados_validados)
         return {"mensagem": "Galpão criado com sucesso!", "id": id}, 201
-    except Exception as e:
+    except ValidationError as err:
+        return jsonify(err.messages), 400
+    except psycopg2.Error as e:
         logger.error(e)
-        return {"mensagem": "Erro ao criar galpão"}, 500
+        return {"erro": "Erro interno ao criar galpão"}, 500
 
 @galpao_bp.put("/<int:id>")
-def putGalpao(id):
-    dados = request.get_json()
-    linhas = service.atualizar(id, dados)
-    if linhas == 0:
-        return {"mensagem": "Galpão não encontrado"}, 404
-    return {"mensagem": "Galpão atualizado com sucesso"}, 200
+def putGalpao(id: int):
+    try:
+        dados = request.get_json()
+        schema = GalpaoSchema()
+        dados_validados = schema.load(dados)
+
+        linhas = service.atualizarGalpao(id, dados_validados)
+        if linhas == 0:
+            return {"mensagem": "Galpão não encontrado"}, 404
+        return {"mensagem": "Galpão atualizado com sucesso"}, 200
+    except ValidationError as err:
+        return jsonify(err.messages), 400
+    except psycopg2.Error as e:
+        logger.error(e)
+        return {"erro": "Erro interno ao atualizar galpão"}, 500
 
 @galpao_bp.delete("/<int:id>")
-def deleteGalpao(id):
-    linhas = service.remover(id)
-    if linhas == 0:
-        return {"mensagem": "Galpão não encontrado"}, 404
-    return {"mensagem": "Galpão removido com sucesso"}, 202
+def deleteGalpao(id: int):
+    logger.info(f"Controller: Deletando galpão id: {id}")
+    try:
+        linhas = service.deletarGalpao(id)
+        if linhas == 0:
+            return {"mensagem": "Galpão não encontrado"}, 404
+        return {"mensagem": "Galpão removido com sucesso!"}, 202
+    except psycopg2.Error as e:
+        logger.error(e)
+        return {"erro": "Erro interno ao remover galpão"}, 500

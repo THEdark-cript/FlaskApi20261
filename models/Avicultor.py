@@ -1,4 +1,3 @@
-import sqlite3
 from marshmallow import Schema, fields, validate
 
 class Avicultor:

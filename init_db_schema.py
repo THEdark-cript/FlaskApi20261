@@ -1,10 +1,10 @@
 import psycopg2
 from helpers.logger import logger
 
-DATABASE_NAME = "avicola"
+DATABASE_NAME = "avicola.db"
 DATABASE_USER = "postgres"
-DATABASE_PASS = "123456"
-DATABASE_PORT = "5435"
+DATABASE_PASS = "postgres"
+DATABASE_PORT = "5434"
 DATABASE_HOST = "localhost"
 
 conn = None
